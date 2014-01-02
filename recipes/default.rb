@@ -158,7 +158,7 @@ service "php" do
   action [:enable, :start]
 end
 
-include_recipe "php::memcached" if node.recipe?("memcached")
-include_recipe "php::mysql" if node.recipe?("mysql")
-include_recipe "php::postgresql" if node.recipe?("postgresql")
-include_recipe "php::sqlite" if node.recipe?("sqlite")
+include_recipe "php::memcached" if node.recipes.include?("memcached")
+include_recipe "php::mysql" if node.recipes.include?("mysql")
+include_recipe "php::postgresql" if node.recipes.include?("postgresql")
+include_recipe "php::sqlite" if node.recipes.include?("sqlite")
