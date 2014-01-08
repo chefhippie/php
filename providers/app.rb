@@ -21,6 +21,14 @@ require "chef/dsl/include_recipe"
 include Chef::DSL::IncludeRecipe
 
 action :create do
+  group new_resource.group do
+    append true
+    members [new_resource.listen_user || node["php"]["server"]["user"]]
+
+    action :manage
+    notifies :restart, "service[#{node["php"]["server"]["service"]}]"
+  end
+
   template ::File.join(node["php"]["pool_dir"], "#{new_resource.alias}.conf") do
     cookbook "php"
     source "pool.conf.erb"

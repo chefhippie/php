@@ -75,6 +75,7 @@ when "debian"
 
   default["php"]["default_app"]["user"] = default["php"]["server"]["user"] = "www-data"
   default["php"]["default_app"]["group"] = default["php"]["server"]["group"] = "www-data"
+  default["php"]["default_app"]["service"] = default["php"]["server"]["service"] = "nginx"
   default["php"]["default_app"]["dir"] = "/var/www"
 when "ubuntu"
   default["php"]["packages"] = %w(
@@ -125,6 +126,7 @@ when "ubuntu"
 
   default["php"]["default_app"]["user"] = default["php"]["server"]["user"] = "www-data"
   default["php"]["default_app"]["group"] = default["php"]["server"]["group"] = "www-data"
+  default["php"]["default_app"]["service"] = default["php"]["server"]["service"] = "nginx"
   default["php"]["default_app"]["dir"] = "/var/www"
 when "suse"
   default["php"]["packages"] = %w(
@@ -171,6 +173,7 @@ when "suse"
 
   default["php"]["default_app"]["user"] = default["php"]["server"]["user"] = "wwwrun"
   default["php"]["default_app"]["group"] = default["php"]["server"]["group"] = "www"
+  default["php"]["default_app"]["service"] = default["php"]["server"]["service"] = "nginx"
   default["php"]["default_app"]["dir"] = "/srv/www/htdocs"
 end
 
@@ -216,11 +219,12 @@ default["php"]["www"]["fix_pathinfo"] = "0"
 default["php"]["default_app"]["enabled"] = true
 
 case
-when node.recipe?("nginx")
+when node.recipes.include?("nginx")
   default["php"]["default_app"]["user"] = node["nginx"]["user"]
   default["php"]["default_app"]["group"] = node["nginx"]["group"]
   default["php"]["default_app"]["dir"] = node["nginx"]["web_dir"]
 
   default["php"]["server"]["user"] = node["nginx"]["user"]
   default["php"]["server"]["group"] = node["nginx"]["group"]
+  default["php"]["server"]["serice"] = "nginx"
 end
