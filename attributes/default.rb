@@ -151,20 +151,14 @@ when "suse"
   )
 
   default["php"]["confs"] = %w(
-    ctype
     curl
     dom
     gd
-    iconv
     intl
-    json
     mcrypt
     pdo
     tidy
-    tokenizer
-    xmlreader
     xmlrpc
-    xmlwriter
     xsl
     zlib
   )

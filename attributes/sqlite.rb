@@ -53,7 +53,6 @@ when "suse"
 
   default["php"]["sqlite"]["confs"] = %w(
     pdo_sqlite
-    sqlite
     sqlite3
   )
 
