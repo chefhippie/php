@@ -220,5 +220,5 @@ when node.recipes.include?("nginx")
 
   default["php"]["server"]["user"] = node["nginx"]["user"]
   default["php"]["server"]["group"] = node["nginx"]["group"]
-  default["php"]["server"]["serice"] = "nginx"
+  default["php"]["server"]["service"] = "nginx"
 end
