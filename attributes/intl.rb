@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: php
-# Recipe:: sqlite
+# Attributes:: intl
 #
 # Copyright 2013, Thomas Boerger
 #
@@ -17,37 +17,37 @@
 # limitations under the License.
 #
 
-node["php"]["sqlite"]["packages"].each do |name|
-  package name do
-    action :install
-  end
-end
+case node["platform_family"]
+when "debian", "ubuntu"
+  default["php"]["intl"]["packages"] = %w(
+    php5-intl
+  )
 
-node["php"]["sqlite"]["removed_files"].each do |name|
-  file name do
-    action :delete
+  default["php"]["intl"]["confs"] = %w(
+    intl
+  )
 
-    only_if do
-      File.exists? name
-    end
-  end
-end
+  default["php"]["intl"]["removed_links"] = %w(
+    /etc/php5/conf.d/20-intl.ini
+  )
 
-node["php"]["sqlite"]["removed_links"].each do |name|
-  link name do
-    action :delete
+  default["php"]["intl"]["removed_files"] = %w(
+    /etc/php5/mods-available/intl.ini
+  )
+when "suse"
+  default["php"]["intl"]["packages"] = %w(
+    php5-intl
+  )
 
-    only_if do
-      File.symlink? name
-    end
-  end
-end
+  default["php"]["intl"]["confs"] = %w(
+    intl
+  )
 
-node["php"]["sqlite"]["confs"].each do |name|
-  php_conf name do
-    template "confs/#{name}.ini.erb"
-    variables node["php"]
+  default["php"]["intl"]["removed_links"] = %w(
 
-    action :create
-  end
+  )
+
+  default["php"]["intl"]["removed_files"] = %w(
+
+  )
 end

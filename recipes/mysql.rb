@@ -23,6 +23,16 @@ node["php"]["mysql"]["packages"].each do |name|
   end
 end
 
+node["php"]["mysql"]["removed_files"].each do |name|
+  file name do
+    action :delete
+
+    only_if do
+      File.exists? name
+    end
+  end
+end
+
 node["php"]["mysql"]["removed_links"].each do |name|
   link name do
     action :delete

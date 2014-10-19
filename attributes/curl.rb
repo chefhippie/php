@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: php
-# Recipe:: sqlite
+# Attributes:: curl
 #
 # Copyright 2013, Thomas Boerger
 #
@@ -17,37 +17,37 @@
 # limitations under the License.
 #
 
-node["php"]["sqlite"]["packages"].each do |name|
-  package name do
-    action :install
-  end
-end
+case node["platform_family"]
+when "debian", "ubuntu"
+  default["php"]["curl"]["packages"] = %w(
+    php5-curl
+  )
 
-node["php"]["sqlite"]["removed_files"].each do |name|
-  file name do
-    action :delete
+  default["php"]["curl"]["confs"] = %w(
+    curl
+  )
 
-    only_if do
-      File.exists? name
-    end
-  end
-end
+  default["php"]["curl"]["removed_links"] = %w(
+    /etc/php5/conf.d/20-curl.ini
+  )
 
-node["php"]["sqlite"]["removed_links"].each do |name|
-  link name do
-    action :delete
+  default["php"]["curl"]["removed_files"] = %w(
+    /etc/php5/mods-available/curl.ini
+  )
+when "suse"
+  default["php"]["curl"]["packages"] = %w(
+    php5-curl
+  )
 
-    only_if do
-      File.symlink? name
-    end
-  end
-end
+  default["php"]["curl"]["confs"] = %w(
+    curl
+  )
 
-node["php"]["sqlite"]["confs"].each do |name|
-  php_conf name do
-    template "confs/#{name}.ini.erb"
-    variables node["php"]
+  default["php"]["curl"]["removed_links"] = %w(
 
-    action :create
-  end
+  )
+
+  default["php"]["curl"]["removed_files"] = %w(
+
+  )
 end

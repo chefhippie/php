@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: php
-# Recipe:: sqlite
+# Recipe:: bcmath
 #
 # Copyright 2013, Thomas Boerger
 #
@@ -17,37 +17,39 @@
 # limitations under the License.
 #
 
-node["php"]["sqlite"]["packages"].each do |name|
-  package name do
-    action :install
-  end
-end
-
-node["php"]["sqlite"]["removed_files"].each do |name|
-  file name do
-    action :delete
-
-    only_if do
-      File.exists? name
+node["php"]["modules"].each do |mod|
+  node["php"][mod]["packages"].each do |name|
+    package name do
+      action :install
     end
   end
-end
 
-node["php"]["sqlite"]["removed_links"].each do |name|
-  link name do
-    action :delete
+  node["php"][mod]["removed_files"].each do |name|
+    file name do
+      action :delete
 
-    only_if do
-      File.symlink? name
+      only_if do
+        File.exists? name
+      end
     end
   end
-end
 
-node["php"]["sqlite"]["confs"].each do |name|
-  php_conf name do
-    template "confs/#{name}.ini.erb"
-    variables node["php"]
+  node["php"][mod]["removed_links"].each do |name|
+    link name do
+      action :delete
 
-    action :create
+      only_if do
+        File.symlink? name
+      end
+    end
+  end
+
+  node["php"][mod]["confs"].each do |name|
+    php_conf name do
+      template "confs/#{name}.ini.erb"
+      variables node["php"]
+
+      action :create
+    end
   end
 end

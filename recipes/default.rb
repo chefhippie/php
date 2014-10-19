@@ -17,6 +17,23 @@
 # limitations under the License.
 #
 
+case node["platform_family"]
+when "suse"
+  include_recipe "zypper"
+
+  zypper_repository node["php"]["zypper"]["alias"] do
+    uri node["php"]["zypper"]["repo"]
+    key node["php"]["zypper"]["key"]
+    title node["php"]["zypper"]["title"]
+
+    action :add
+
+    only_if do
+      node["php"]["zypper"]["enabled"]
+    end
+  end
+end
+
 node["php"]["packages"].each do |name|
   package name do
     action :install
@@ -71,23 +88,31 @@ node["php"]["create_symlinks"].each do |source, destination|
   end
 end
 
-directory node["php"]["log_dir"] do
+directory node["php"]["log_dir"].to_s do
   owner "root"
   group "root"
   mode 0640
 
   action :create
+
+  not_if do
+    node["php"]["log_dir"].nil?
+  end
 end
 
-directory node["php"]["run_dir"] do
+directory node["php"]["run_dir"].to_s do
   owner node["php"]["server"]["user"]
   group node["php"]["server"]["group"]
   mode 0750
 
   action :create
+
+  not_if do
+    node["php"]["run_dir"].nil?
+  end
 end
 
-template node["php"]["config_file"] do
+template node["php"]["config_file"].to_s do
   source "php-fpm.conf.erb"
   owner "root"
   group "root"
@@ -98,6 +123,10 @@ template node["php"]["config_file"] do
   )
 
   notifies :restart, "service[php]"
+
+  not_if do
+    node["php"]["config_file"].nil?
+  end
 end
 
 template node["php"]["cli"]["config_file"] do
@@ -153,12 +182,13 @@ php_app "www" do
   end
 end
 
-service "php" do
-  service_name node["php"]["service_name"]
-  action [:enable, :start]
-end
-
+include_recipe "php::modules"
 include_recipe "php::memcached" if node.recipes.include?("memcached")
 include_recipe "php::mysql" if node.recipes.include?("mysql")
 include_recipe "php::postgresql" if node.recipes.include?("postgresql")
 include_recipe "php::sqlite" if node.recipes.include?("sqlite")
+
+service "php" do
+  service_name node["php"]["service_name"]
+  action [:enable, :start]
+end

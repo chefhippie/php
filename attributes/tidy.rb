@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: php
-# Recipe:: sqlite
+# Attributes:: tidy
 #
 # Copyright 2013, Thomas Boerger
 #
@@ -17,37 +17,37 @@
 # limitations under the License.
 #
 
-node["php"]["sqlite"]["packages"].each do |name|
-  package name do
-    action :install
-  end
-end
+case node["platform_family"]
+when "debian", "ubuntu"
+  default["php"]["tidy"]["packages"] = %w(
+    php5-tidy
+  )
 
-node["php"]["sqlite"]["removed_files"].each do |name|
-  file name do
-    action :delete
+  default["php"]["tidy"]["confs"] = %w(
+    tidy
+  )
 
-    only_if do
-      File.exists? name
-    end
-  end
-end
+  default["php"]["tidy"]["removed_links"] = %w(
+    /etc/php5/conf.d/20-tidy.ini
+  )
 
-node["php"]["sqlite"]["removed_links"].each do |name|
-  link name do
-    action :delete
+  default["php"]["tidy"]["removed_files"] = %w(
+    /etc/php5/mods-available/tidy.ini
+  )
+when "suse"
+  default["php"]["tidy"]["packages"] = %w(
+    php5-tidy
+  )
 
-    only_if do
-      File.symlink? name
-    end
-  end
-end
+  default["php"]["tidy"]["confs"] = %w(
+    tidy
+  )
 
-node["php"]["sqlite"]["confs"].each do |name|
-  php_conf name do
-    template "confs/#{name}.ini.erb"
-    variables node["php"]
+  default["php"]["tidy"]["removed_links"] = %w(
 
-    action :create
-  end
+  )
+
+  default["php"]["tidy"]["removed_files"] = %w(
+
+  )
 end
