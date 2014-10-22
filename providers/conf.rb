@@ -33,7 +33,13 @@ action :create do
       new_resource.variables
     )
 
-    notifies :restart, "service[php]"
+    if node["php"]["apache"]["enabled"]
+      notifies :restart, "service[modphp]"
+    end
+
+    if node["php"]["fpm"]["enabled"]
+      notifies :restart, "service[php]"
+    end
   end
 
   new_resource.updated_by_last_action(true)
@@ -42,7 +48,14 @@ end
 action :delete do
   file ::File.join(node["php"]["confs_dir"], "#{new_resource.name}.conf") do
     action :delete
-    notifies :restart, "service[php]"
+
+    if node["php"]["apache"]["enabled"]
+      notifies :restart, "service[modphp]"
+    end
+
+    if node["php"]["fpm"]["enabled"]
+      notifies :restart, "service[php]"
+    end
   end
 
   new_resource.updated_by_last_action(true)

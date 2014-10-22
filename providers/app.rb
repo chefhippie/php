@@ -21,15 +21,20 @@ require "chef/dsl/include_recipe"
 include Chef::DSL::IncludeRecipe
 
 action :create do
+  return unless node["php"]["fpm"]["enabled"]
+
   group new_resource.group do
     append true
     members [new_resource.listen_user || node["php"]["server"]["user"]]
 
     action :manage
-    notifies :restart, "service[#{node["php"]["server"]["service"]}]"
+    
+    unless node["php"]["server"]["service"].nil?
+      notifies :restart, "service[#{node["php"]["server"]["service"]}]"
+    end
   end
 
-  template ::File.join(node["php"]["pool_dir"], "#{new_resource.alias}.conf") do
+  template ::File.join(node["php"]["fpm"]["pool_dir"], "#{new_resource.alias}.conf") do
     cookbook "php"
     source "pool.conf.erb"
 
@@ -38,7 +43,7 @@ action :create do
     group "root"
 
     variables(
-      node["php"].merge({
+      node["php"]["fpm"].merge({
         "listen_user" => new_resource.listen_user || node["php"]["server"]["user"],
         "listen_group" => new_resource.listen_group || node["php"]["server"]["group"],
 
@@ -60,8 +65,11 @@ action :create do
 end
 
 action :delete do
+  return unless node["php"]["fpm"]["enabled"]
+
   file ::File.join(node["php"]["pool_dir"], "#{new_resource.alias}.conf") do
     action :delete
+
     notifies :restart, "service[php]"
   end
 

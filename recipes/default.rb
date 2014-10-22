@@ -88,47 +88,6 @@ node["php"]["create_symlinks"].each do |source, destination|
   end
 end
 
-directory node["php"]["log_dir"].to_s do
-  owner "root"
-  group "root"
-  mode 0640
-
-  action :create
-
-  not_if do
-    node["php"]["log_dir"].nil?
-  end
-end
-
-directory node["php"]["run_dir"].to_s do
-  owner node["php"]["server"]["user"]
-  group node["php"]["server"]["group"]
-  mode 0750
-
-  action :create
-
-  not_if do
-    node["php"]["run_dir"].nil?
-  end
-end
-
-template node["php"]["config_file"].to_s do
-  source "php-fpm.conf.erb"
-  owner "root"
-  group "root"
-  mode 0644
-
-  variables(
-    node["php"]
-  )
-
-  notifies :restart, "service[php]"
-
-  not_if do
-    node["php"]["config_file"].nil?
-  end
-end
-
 template node["php"]["cli"]["config_file"] do
   source "php.ini.erb"
   owner "root"
@@ -138,21 +97,6 @@ template node["php"]["cli"]["config_file"] do
   variables(
     node["php"]["cli"]
   )
-
-  notifies :restart, "service[php]"
-end
-
-template node["php"]["www"]["config_file"] do
-  source "php.ini.erb"
-  owner "root"
-  group "root"
-  mode 0644
-
-  variables(
-    node["php"]["www"]
-  )
-
-  notifies :restart, "service[php]"
 end
 
 file "/usr/sbin/php5enmod" do
@@ -163,32 +107,20 @@ file "/usr/sbin/php5enmod" do
   content ""
 end
 
-node["php"]["confs"].each do |name|
-  php_conf name do
-    template "confs/#{name}.ini.erb"
-    variables node["php"]
+file "/usr/sbin/php5dismod" do
+  owner "root"
+  group "root"
+  mode 0755
 
-    action :create
-  end
-end
-
-php_app "www" do
-  chdir node["php"]["default_app"]["dir"]
-  user node["php"]["default_app"]["user"]
-  group node["php"]["default_app"]["group"]
-
-  only_if do
-    node["php"]["default_app"]["enabled"]
-  end
+  content ""
 end
 
 include_recipe "php::modules"
+
 include_recipe "php::memcached" if node.recipes.include?("memcached")
 include_recipe "php::mysql" if node.recipes.include?("mysql")
 include_recipe "php::postgresql" if node.recipes.include?("postgresql")
 include_recipe "php::sqlite" if node.recipes.include?("sqlite")
 
-service "php" do
-  service_name node["php"]["service_name"]
-  action [:enable, :start]
-end
+include_recipe "php::fpm" if node["php"]["fpm"]["enabled"]
+include_recipe "php::apache" if node["php"]["apache"]["enabled"]
