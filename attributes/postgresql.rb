@@ -39,27 +39,6 @@ when "debian"
   default["php"]["postgresql"]["removed_files"] = %w(
     /etc/php5/mods-available/pdo.ini
   )
-when "ubuntu"
-  default["php"]["postgresql"]["packages"] = %w(
-    php5-pdo
-    php5-pgsql
-  )
-
-  default["php"]["postgresql"]["confs"] = %w(
-    pdo
-    pdo_pgsql
-    pgsql
-  )
-
-  default["php"]["postgresql"]["removed_links"] = %w(
-    /etc/php5/conf.d/10-pdo.ini
-    /etc/php5/conf.d/20-pdo_pgsql.ini
-    /etc/php5/conf.d/20-pgsql.ini
-  )
-
-  default["php"]["postgresql"]["removed_files"] = %w(
-    /etc/php5/mods-available/pdo.ini
-  )
 when "suse"
   default["php"]["postgresql"]["packages"] = %w(
     php5-pdo

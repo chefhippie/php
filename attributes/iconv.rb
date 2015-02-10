@@ -18,7 +18,7 @@
 #
 
 case node["platform_family"]
-when "debian", "ubuntu"
+when "debian"
   default["php"]["iconv"]["packages"] = %w(
     php5-iconv
   )

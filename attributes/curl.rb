@@ -18,7 +18,7 @@
 #
 
 case node["platform_family"]
-when "debian", "ubuntu"
+when "debian"
   default["php"]["curl"]["packages"] = %w(
     php5-curl
   )

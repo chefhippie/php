@@ -38,26 +38,6 @@ when "debian"
     /etc/php5/conf.d
     /etc/php5/mods-available
   )
-when "ubuntu"
-  default["php"]["packages"] = %w(
-    libgd2-xpm
-    php5-cli
-    php5-dev
-    php-pear
-  )
-
-  default["php"]["removed_files"] = %w(
-    /usr/sbin/php5enmod
-  )
-
-  default["php"]["removed_links"] = %w(
-    /usr/sbin/php5dismod
-  )
-
-  default["php"]["create_dirs"] = %w(
-    /etc/php5/conf.d
-    /etc/php5/mods-available
-  )
 when "suse"
   default["php"]["packages"] = %w(
     php5-pear

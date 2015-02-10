@@ -39,27 +39,6 @@ when "debian"
   default["php"]["sqlite"]["removed_files"] = %w(
     /etc/php5/mods-available/pdo.ini
   )
-when "ubuntu"
-  default["php"]["sqlite"]["packages"] = %w(
-    php5-pdo
-    php5-sqlite
-  )
-
-  default["php"]["sqlite"]["confs"] = %w(
-    pdo
-    pdo_sqlite
-    sqlite3
-  )
-
-  default["php"]["sqlite"]["removed_links"] = %w(
-    /etc/php5/conf.d/10-pdo.ini
-    /etc/php5/conf.d/20-pdo_sqlite.ini
-    /etc/php5/conf.d/20-sqlite3.ini
-  )
-
-  default["php"]["sqlite"]["removed_files"] = %w(
-    /etc/php5/mods-available/pdo.ini
-  )
 when "suse"
   default["php"]["sqlite"]["packages"] = %w(
     php5-pdo

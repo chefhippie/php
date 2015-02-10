@@ -23,9 +23,6 @@ default["php"]["fpm"]["packages"] = value_for_platform_family(
   "debian" => %w(
     php5-fpm
   ),
-  "ubuntu" => %w(
-    php5-fpm
-  ),
   "suse" => %w(
     php5-fpm
   )
@@ -43,7 +40,7 @@ default["php"]["fpm"]["create_symlinks"] = {
   "/etc/php5/fpm/conf.d" => "/etc/php5/conf.d"
 }
 
-default["php"]["fpm"]["www"]["config_file"] = "/etc/php5/fpm/php.ini" 
+default["php"]["fpm"]["www"]["config_file"] = "/etc/php5/fpm/php.ini"
 default["php"]["fpm"]["www"]["max_execution_time"] = 0
 default["php"]["fpm"]["www"]["memory_limit"] = "2048M"
 default["php"]["fpm"]["www"]["display_errors"] = false
@@ -54,7 +51,6 @@ default["php"]["fpm"]["www"]["fix_pathinfo"] = "0"
 
 default["php"]["fpm"]["service_name"] = value_for_platform_family(
   "debian" => "php5-fpm",
-  "ubuntu" => "php5-fpm",
   "suse" => "php-fpm"
 )
 
@@ -67,11 +63,6 @@ default["php"]["fpm"]["default"]["enabled"] = node["php"]["fpm"]["enabled"]
 
 case node["platform_family"]
 when "debian"
-  default["php"]["fpm"]["default"]["user"] = default["php"]["server"]["user"] = "www-data"
-  default["php"]["fpm"]["default"]["group"] = default["php"]["server"]["group"] = "www-data"
-  default["php"]["fpm"]["default"]["service"] = default["php"]["server"]["service"] = nil
-  default["php"]["fpm"]["default"]["dir"] = "/var/www"
-when "ubuntu"
   default["php"]["fpm"]["default"]["user"] = default["php"]["server"]["user"] = "www-data"
   default["php"]["fpm"]["default"]["group"] = default["php"]["server"]["group"] = "www-data"
   default["php"]["fpm"]["default"]["service"] = default["php"]["server"]["service"] = nil

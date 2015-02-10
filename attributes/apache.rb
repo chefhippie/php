@@ -23,9 +23,6 @@ default["php"]["apache"]["packages"] = value_for_platform_family(
   "debian" => %w(
     libapache2-mod-php5
   ),
-  "ubuntu" => %w(
-    libapache2-mod-php5
-  ),
   "suse" => %w(
     apache2-mod_php5
   )
@@ -43,7 +40,7 @@ default["php"]["apache"]["create_symlinks"] = {
   "/etc/php5/apache2/conf.d" => "/etc/php5/conf.d"
 }
 
-default["php"]["apache"]["www"]["config_file"] = "/etc/php5/apache2/php.ini" 
+default["php"]["apache"]["www"]["config_file"] = "/etc/php5/apache2/php.ini"
 default["php"]["apache"]["www"]["max_execution_time"] = 0
 default["php"]["apache"]["www"]["memory_limit"] = "2048M"
 default["php"]["apache"]["www"]["display_errors"] = false
@@ -54,6 +51,5 @@ default["php"]["apache"]["www"]["fix_pathinfo"] = "0"
 
 default["php"]["apache"]["service_name"] = value_for_platform_family(
   "debian" => "apache2",
-  "ubuntu" => "apache2",
   "suse" => "apache2"
 )

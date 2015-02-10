@@ -30,18 +30,6 @@ when "debian"
   default["php"]["memcached"]["removed_links"] = %w(
     /etc/php5/conf.d/20-memcached.ini
   )
-when "ubuntu"
-  default["php"]["memcached"]["packages"] = %w(
-    php5-memcached
-  )
-
-  default["php"]["memcached"]["confs"] = %w(
-    memcached
-  )
-
-  default["php"]["memcached"]["removed_links"] = %w(
-    /etc/php5/conf.d/20-memcached.ini
-  )
 when "suse"
   default["php"]["memcached"]["packages"] = %w(
 

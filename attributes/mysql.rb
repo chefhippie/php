@@ -41,29 +41,6 @@ when "debian"
   default["php"]["mysql"]["removed_files"] = %w(
     /etc/php5/mods-available/pdo.ini
   )
-when "ubuntu"
-  default["php"]["mysql"]["packages"] = %w(
-    php5-pdo
-    php5-mysql
-  )
-
-  default["php"]["mysql"]["confs"] = %w(
-    pdo
-    pdo_mysql
-    mysql
-    mysqli
-  )
-
-  default["php"]["mysql"]["removed_links"] = %w(
-    /etc/php5/conf.d/10-pdo.ini
-    /etc/php5/conf.d/20-pdo_mysql.ini
-    /etc/php5/conf.d/20-mysql.ini
-    /etc/php5/conf.d/20-mysqli.ini
-  )
-
-  default["php"]["mysql"]["removed_files"] = %w(
-    /etc/php5/mods-available/pdo.ini
-  )
 when "suse"
   default["php"]["mysql"]["packages"] = %w(
     php5-pdo
