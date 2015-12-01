@@ -102,8 +102,22 @@ default["php"]["cli"]["post_max_size"] = "128M"
 default["php"]["cli"]["upload_max_filesize"] = "128M"
 default["php"]["cli"]["fix_pathinfo"] = "1"
 
-default["php"]["zypper"]["enabled"] = true
-default["php"]["zypper"]["alias"] = "php-extensions"
-default["php"]["zypper"]["title"] = "PHP Extensions"
-default["php"]["zypper"]["repo"] = "http://download.opensuse.org/repositories/server:/php:/extensions/openSUSE_#{node["platform_version"]}/"
-default["php"]["zypper"]["key"] = "#{node["php"]["zypper"]["repo"]}repodata/repomd.xml.key"
+case node["platform_family"]
+when "suse"
+  repo = case node["platform_version"]
+  when /\A13\.\d+\z/
+    "openSUSE_#{node["platform_version"]}"
+  when /\A42\.\d+\z/
+    "openSUSE_Leap_#{node["platform_version"]}"
+  when /\A\d{8}\z/
+    "openSUSE_Factory"
+  else
+    raise "Unsupported SUSE version"
+  end
+
+  default["php"]["zypper"]["enabled"] = true
+  default["php"]["zypper"]["alias"] = "php-extensions"
+  default["php"]["zypper"]["title"] = "PHP Extensions"
+  default["php"]["zypper"]["repo"] = "http://download.opensuse.org/repositories/server:/php:/extensions/#{repo}/"
+  default["php"]["zypper"]["key"] = "#{node["php"]["zypper"]["repo"]}repodata/repomd.xml.key"
+end
