@@ -38,6 +38,20 @@ when "debian"
     /etc/php5/conf.d
     /etc/php5/mods-available
   )
+
+  default["php"]["modules"] = %w(
+    imagick
+    json
+    ldap
+    sqlite
+    curl
+    intl
+    mcrypt
+    xmlrpc
+    xsl
+    tidy
+    gd
+  )
 when "suse"
   default["php"]["packages"] = %w(
     php5-pear
@@ -55,33 +69,33 @@ when "suse"
   default["php"]["create_dirs"] = %w(
     /etc/php5/conf.d
   )
-end
 
-default["php"]["modules"] = %w(
-  bcmath
-  ctype
-  dom
-  gettext
-  iconv
-  imagick
-  json
-  ldap
-  mbstring
-  openssl
-  posix
-  sqlite
-  tokenizer
-  xmlreader
-  xmlwriter
-  zlib
-  curl
-  intl
-  mcrypt
-  xmlrpc
-  xsl
-  tidy
-  gd
-)
+  default["php"]["modules"] = %w(
+    bcmath
+    ctype
+    dom
+    gettext
+    iconv
+    imagick
+    json
+    ldap
+    mbstring
+    openssl
+    posix
+    sqlite
+    tokenizer
+    xmlreader
+    xmlwriter
+    zlib
+    curl
+    intl
+    mcrypt
+    xmlrpc
+    xsl
+    tidy
+    gd
+  )
+end
 
 default["php"]["removed_dirs"] = %w(
   /etc/php5/cli/conf.d
