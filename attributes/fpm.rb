@@ -30,7 +30,10 @@ default["php"]["fpm"]["packages"] = value_for_platform_family(
 
 default["php"]["fpm"]["removed_files"] = %w()
 default["php"]["fpm"]["removed_links"] = %w()
-default["php"]["fpm"]["removed_dirs"] = %w()
+
+default["php"]["fpm"]["removed_dirs"] = %w(
+  /etc/php5/fpm/conf.d
+)
 
 default["php"]["fpm"]["create_dirs"] = %w(
   /etc/php5/fpm/pool.d

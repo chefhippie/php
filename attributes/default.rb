@@ -84,7 +84,7 @@ default["php"]["modules"] = %w(
 )
 
 default["php"]["removed_dirs"] = %w(
-
+  /etc/php5/cli/conf.d
 )
 
 default["php"]["create_symlinks"] = {
