@@ -20,7 +20,6 @@
 case node["platform_family"]
 when "debian"
   default["php"]["mysql"]["packages"] = %w(
-    php5-pdo
     php5-mysql
   )
 
